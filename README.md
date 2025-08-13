@@ -40,44 +40,28 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 Name : Muthulakshmi D
 Reg : 212223040122
 ```
-def vigenere_encrypt(text, key):
-    text_len = len(text)
-    key_len = len(key)
-    encrypted_text = list(text)
-    
-    for i in range(text_len):
-        c = text[i]
-        if 'A' <= c <= 'Z':
-            encrypted_text[i] = chr(((ord(c) - ord('A') + ord(key[i % key_len]) - ord('A')) % 26) + ord('A'))
-        elif 'a' <= c <= 'z':
-            encrypted_text[i] = chr(((ord(c) - ord('a') + ord(key[i % key_len]) - ord('A')) % 26) + ord('a'))
-    
-    return "".join(encrypted_text)
+### 4 vignere
+def vigenere(text, key, mode='encrypt'):
+    result = []
+    for i, c in enumerate(text):
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            k = ord(key[i % len(key)].upper()) - ord('A')
+            shift = k if mode == 'encrypt' else -k
+            result.append(chr((ord(c) - base + shift) % 26 + base))
+        else:
+            result.append(c)
+    return ''.join(result)
 
-def vigenere_decrypt(text, key):
-    text_len = len(text)
-    key_len = len(key)
-    decrypted_text = list(text)
-    
-    for i in range(text_len):
-        c = text[i]
-        if 'A' <= c <= 'Z':
-            decrypted_text[i] = chr(((ord(c) - ord('A') - (ord(key[i % key_len]) - ord('A')) + 26) % 26) + ord('A'))
-        elif 'a' <= c <= 'z':
-            decrypted_text[i] = chr(((ord(c) - ord('a') - (ord(key[i % key_len]) - ord('A')) + 26) % 26) + ord('a'))
-    
-    return "".join(decrypted_text)
+key = input("Enter key: ")
+msg = input("Enter plain text: ")
 
-key = input("enter key:") 
-message = input("\nenter plain text:")  
+enc = vigenere(msg, key, 'encrypt')
+print("\nEncrypted Message:", enc)
 
-# Encrypt the message
-encrypted_message = vigenere_encrypt(message, key)
-print("\nEncrypted Message:", encrypted_message)
+dec = vigenere(enc, key, 'decrypt')
+print("Decrypted Message:", dec)
 
-# Decrypt the message
-decrypted_message = vigenere_decrypt(encrypted_message, key)
-print("\nDecrypted Message:", decrypted_message)
 ```
 ## Output :
 ![424297893-b46b6bd6-03f0-49a9-b7f7-a64ae6aa5204](https://github.com/user-attachments/assets/f8e1e7f6-6714-4c47-beff-61f17814b1b0)
